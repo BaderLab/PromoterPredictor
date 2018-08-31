@@ -1,0 +1,103 @@
+Required Software and packages:
+-Use Python 2.7.X
+  -All required Python packages are included in the standard Python library
+-You will be required to download WEKA (http://www.cs.waikato.ac.nz/ml/weka/downloading.html)
+ NOTE: this software was developed using WEKA 3.7, use a different version at your own risk
+
+=======================================================================================
+How to run promoter predictor (instructions will be given to run on the example file):
+=======================================================================================
+(1)
+Create a csv file with 0 spaces with the information in the following order (DO NOT include a header in your file):
+(please take a look at the “test_input_csv.csv” file for an example of how the input file should look).
+Please note coordinates should be given in the positive strand orientation.
+    chromosome, start_position, end_position
+    i.e. 19,12100,14600
+(2)
+Open a command prompt window and cd to the directory containing the software package and run the following command
+(replace path PATH_TO_YOUR_FILE with the path for where the file is saved on your machine and YOUR_FILENAME with your
+file's name). *NOTE*: It is important that you do not copy and paste these commands into the terminal window as special
+characters such as "-" will not be recognized:
+    python run_package.py –f PATH_TO_YOUR_FILE\YOUR_FILENAME.csv
+
+(3)
+The script will generate a file called "user_define_kmers_feature_values.arff". When the script instructs you to
+"Please generate WEKA output file and then press Enter to continue..." DO NOT PRESS ENTER YET. Open a Weka instance and
+select the "Simple CLI" and enter the following code into the input area provided (replace PATH_TO_SOFTWARE_FOLDER with the
+path for where the software is saved on your machine):
+    java weka.classifiers.functions.SMO -l PATH_TO_SOFTWARE_FOLDER\SVM_promoter_predictor_model.model -T PATH_TO_SOFTWARE_FOLDER\generated_files\user_define_kmers_feature_values.arff -classifications "weka.classifiers.evaluation.output.prediction.CSV" > PATH_TO_SOFTWARE_FOLDER\generated_files\user_define_kmers_feature_values_predictions.csv
+
+(4)
+Return to the window where the script is running and now press enter to continue. The script will output a file named
+"user_define_kmers_promoter_prediction_coordinates.csv" into the "generated_files" folder, which will contain the coordinates for all predicted promoters found in
+the given data set. The script will further display the message "Refining promoter boundaries using DNAse data". During this step all promoter boundaries
+are being refined using DNAse data and a file named "DNAse_promoter_prediction_coordinates.csv" will be generated. This file will take the promoter
+predictions present in "user_define_kmers_promoter_prediction_coordinates.csv" and refine the boundaries using DNAse data. Note that the output has a
+"evidence" column, which will report wether the predictions were made using DNAse peak data as described above or if they are direct output from
+the learner itself.
+
+NOTE: All files in the "generated_files" folder will be automatically written over between runs, save important results elsewhere locally.
+=======================================================================================
+How to run promoter predictor on example file:
+=======================================================================================
+(1)
+cd into the directory containing the software package and run:
+*NOTE*: It is important that you do not copy and paste these commands into the
+terminal window as special characters such as "-" will not be recognized:
+    python run_package.py -f PATH_TO_SOFTWARE_FOLDER\test_input_csv.csv
+
+(2)
+When the script prompts you to "Please generate WEKA output file and then press Enter to continue..."
+open a WEKA instance and select the "Simple CLI" and run the following command in the space provided:
+    java weka.classifiers.functions.SMO -l PATH_TO_SOFTWARE_FOLDER\SVM_promoter_predictor_model.model -T PATH_TO_SOFTWARE_FOLDER\generated_files\user_define_kmers_feature_values.arff -classifications "weka.classifiers.evaluation.output.prediction.CSV" > PATH_TO_SOFTWARE_FOLDER\generated_files\user_define_kmers_feature_values_predictions.csv
+
+(3)
+Return to the window where the script is running and now press enter to continue. The script will output a file named
+"user_define_kmers_promoter_prediction_coordinates.csv", which will contain the coordinates for all predicted promoters found in
+the example data set. The output should resemble (contains putative regulatory regions from chromosome 10, 13 and 19):
+
+chrom,promoter_start,promoter_end
+10,89400,92800
+19,303700,308000
+13,19169200,19174100
+19,296000,300000
+13,19166600,19171500
+19,291500,298200
+19,353600,358500
+10,96100,99200
+19,262400,273700
+19,357000,364200
+19,278800,283500
+13,19139900,19144800
+19,296000,300900
+19,381600,390800
+19,291500,298200
+19,344800,350700
+19,299800,304700
+19,376100,380900
+19,262400,273700
+
+Futhermore, the output predicted promoters from the example data will also have their boundaries refined using DNAse data.
+This output file can be found in the "generated_files" folder also and will be names "DNAse_promoter_prediction_coordinates.csv".
+The output for the example data should look like this:
+
+chrom,promoter_start,promoter_end,evidence
+10,89598,89670,DNAse peaks
+19,304314,307862,DNAse peaks
+13,19172470,19172605,DNAse peaks
+19,296015,298347,DNAse peaks
+13,19168865,19169154,DNAse peaks
+19,291543,297903,DNAse peaks
+19,353827,357547,DNAse peaks
+10,96101,98362,DNAse peaks
+19,263113,272600,DNAse peaks
+19,357267,363195,DNAse peaks
+19,279088,283446,DNAse peaks
+19,296015,300438,DNAse peaks
+19,381827,390728,DNAse peaks
+19,291543,297903,DNAse peaks
+19,344985,350160,DNAse peaks
+19,300388,304632,DNAse peaks
+19,376116,380890,DNAse peaks
+19,263113,272600,DNAse peaks
+13,19139900,19144800,raw predictor output

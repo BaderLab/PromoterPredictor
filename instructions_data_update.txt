@@ -1,0 +1,86 @@
+'''
+Author: Ahmad Shah
+
+Contact: ahmad.shah@mail.utoronto.ca
+
+Created: August, 2018
+
+'''
+
+======================= UPDATING SQLite TABLES =================================
+
+The promoter predictor takes advantage of SQLite3 in order to organize genetic
+data in relational database tables. Although all relevant tables of information
+are provided, it is understood that this data may become outdated in the future.
+To circumvent this potential issue, we provide scripts that allow users to
+input updated data files for the 5 feature selected features used by the
+learner and generate updated SQLite tables that will be used when generating
+feature vectors. All data that is currently being used can be found within the
+"data" folder. When updating any of the feature values, please ensure the file
+name of the new input file is the same as the one it is replacing. To ensure
+your input file has the correct format, match it to that of the given file,
+being cautious of headers, spacing etc.
+
+The following scripts will update the necessary SQLite tables:
+1) create_gene_info_SQLiteTable.py
+2) create_methProbes_SQLiteTable.py
+3) create_CpG_SQLiteTable.py
+4) create_chipPeaks_SQLiteTable.py
+
+In order to update the data feature you are interested follow these steps:
+  1) Change out all required files with updated files *using the same file name*
+  in the "data" folder
+  2) Run the script in terminal
+
+  Example: Updating the gene information tables:
+    1) Replace "refseq_genes.txt" and/or "biomart_genes.txt" in "data" folder
+    with new versions with the same file names
+    2) Run in terminal:
+        python create_gene_info_SQLiteTable.py
+
+**NOTE:**
+All of these scripts assume that you are working out of the "promoter_predictor"
+root directory where all of the scripts are contained to run the promoter region
+predictor.
+
+================Detailed instructions for running each script:==================
+1) create_gene_info_SQLiteTable.py
+This script is used to update the reference genome utilized by the learner. The
+default included genome is Hg19 and all coordinates for feature values are the
+same. This script requires two input files:
+  - "refseq_genes.txt"
+      Contains the coordinates for all genes in the human genome based on the
+      refseq standard.
+  - "biomart_genes.txt"
+      Contains the coordinates for all genes in the human genome based on the
+      biomart standard.
+
+2) create_methProbes_SQLiteTable.py
+This script will update the genomic location of methylation probes mapping to
+the human genome. The original probe coordinates are gathered from the
+HumanMethylation450k array. This script requires one file:
+  - "methylation_probes.txt"
+      Contains genomic coordinates for methylation probes mapping to the human
+      genome based on the HumanMethylation450k array.
+
+3) create_CpG_SQLiteTable.py
+This script will update the genomic location of CpG islands across the human
+genome. The original table contains information from UCSC's CpG island tracks as
+described in detail in the original manuscript. This script requires one input
+file:
+  - "cpg_island.txt"
+      Contains genomic coordinates of CpG islands across the human genome based
+      on the data accumulated by UCSC in their CpG island track
+
+4) create_chipPeaks_SQLiteTable.py
+This script will update the genomic location of ChIP-Seq peaks across the human
+genome for the 3 cell-line/histone mark combinations that were feature selected.
+These files can be found via the Epigenetics roadmap project's website here:
+http://egg2.wustl.edu/roadmap/data/byFileType/peaks/consolidated/narrowPeak/
+This script requires 3 input files:
+  -"E029-H3K36me3.narrowPeak"
+  -"E037-H3K36me3.narrowPeak"
+  -"E118-H3K36me3.narrowPeak"
+    All Of these files contain the genomic coordiantes of ChIP-seq peaks across
+    the human genome and can be found via the Epigenetics roadmap projects
+    website linked above.
