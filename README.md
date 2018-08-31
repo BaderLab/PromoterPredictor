@@ -9,7 +9,7 @@ Created: August, 2018
 
 =====PROMOTER PREDICTOR SOFTWARE=====
 
-This folder contains the necessary files for running the promoter region predictor
+This repository contains the necessary files for running the promoter region predictor
 curated in the associated study. The package contains several python scripts,
 SQLite3 databases and a WEKA model file containing the resulting model. All
 instructions pertaining to which packages must be installed and how to run the
