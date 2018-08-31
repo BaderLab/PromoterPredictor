@@ -1,14 +1,11 @@
 # PromoterPredictor
 Using a SVM and 5 identified features, scan genomic coordinates for putative promoter regions
 
-'''
 Author: Ahmad Shah
 
 Contact: ahmad.shah@mail.utoronto.ca
 
 Created: August, 2018
-
-'''
 
 =====PROMOTER PREDICTOR SOFTWARE=====
 
